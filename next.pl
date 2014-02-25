@@ -32,7 +32,7 @@ sub start {
 			}
 			if(not $used) {
 				print "https://www.youtube.com/watch?v=" . $idnew . "\n";
-				$titles[$#titles] = $title;
+				push @titles, $title;
 			}
 		}
 	}

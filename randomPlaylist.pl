@@ -10,32 +10,36 @@ open FD, ">$path" or die "Couldn't open $path.";
 print FD "#EXTM3U\n\n";
 
 my @titles;
+my @urls;
 my $i = 0;
 while($i < $nb) {
     # Getting the title of the video
-    `wget $url -O /tmp/youtube.html`;
-    open HTML, "/tmp/youtube.html" or die "Couldn't download/read /tmp/youtube.html.";
+    my $html = `wget $url -O - 2> /dev/null`;
     my $title = "";
-    while(<HTML>) {
-        if($_ =~ /<title>(.*)<\/title>/) {
-            $title = $1;
-            $title =~ s/( )*-Youtube.*//;
-        }
+    if($html =~ /<title>(.*)<\/title>/) {
+        $title = $1;
+        $title =~ s/( )*-Youtube.*//;
     }
-    close HTML;
     print "Adding video \"$title\".\n";
     push @titles, $title;
 
     # Getting the stream of the video
     my $stream = `youtube-dl -g $url`;
     print "Found stream : $stream\n";
-    
+
     # Adding the video to the playlist
     print FD "#EXTINF:-1,$title\n$stream\n\n";
     print "\n";
 
     # Getting the next video
-    $url = `./next.pl $regex @titles`;
+    if(scalar(@urls) == 0) {
+        open HTML, ">/tmp/youtube.html" or die;
+        print HTML $html;
+        close HTML;
+        my $temp = `./next.pl $regex @titles`;
+        @urls = split('\n', $temp);
+    }
+    $url = pop @urls;
     ++$i;
 }
 
