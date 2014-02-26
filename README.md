@@ -11,4 +11,8 @@ The script listPlaylist use the youtube url of a video in a youtube playlist to 
 Its usage is :
     ./listPlaylist.pl /path/to/playlist.m3u https://first_url
 
+The script dlplaylist download the videos of youtube playlist onto a directory.
+Its usage is :
+    ./dlplaylist.pl https://first_url /path/to/dir/
+
 
