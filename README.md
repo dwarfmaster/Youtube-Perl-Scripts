@@ -15,4 +15,8 @@ The script dlplaylist download the videos of youtube playlist onto a directory.
 Its usage is :
     ./dlplaylist.pl https://first_url /path/to/dir/
 
+The script stream will take a url from a youtube video or playlist and play it with mplayer.
+Its usage is :
+    ./stream.pl https://url
+
 
